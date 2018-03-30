@@ -21,7 +21,7 @@
             ^{:key index}
             [:li
              {:style {:border (when (= index @drag-index)
-                                "1px solid blue")}
+                                "1px solid coral")}
               :draggable true
               :on-drag-start #(rf/dispatch [:set-drag-index index])
               :on-drag-over (fn [e]
@@ -29,9 +29,7 @@
                               (rf/dispatch [:set-drag-over position])
                               (rf/dispatch [:swap-position put-before position @drag-index]))
               :on-drag-leave #(rf/dispatch [:drag-over-nothing])
-              :on-drag-end (fn []
-                             (rf/dispatch [:clean-drag-n-drop])
-                             (map items-vec @order-index))}
+              :on-drag-end (fn [] (rf/dispatch [:clean-drag-n-drop]))}
              (get items-vec index)]))]])))
 
 (defn ui []
@@ -39,10 +37,11 @@
     (fn []
       [:div
        [draggable-list
-        "a"
-        "b"
-        "c"
-        "d"]
+        [:div {:style {:background-color "#DDD" :line-height 1}}
+         [:span "a"]]
+        [:h3 "b"]
+        [:h3 "c"]
+        [:h3 "d"]]
        [:h3 "UI"]
        [:pre (with-out-str (cljs.pprint/pprint @state))]])))
 
