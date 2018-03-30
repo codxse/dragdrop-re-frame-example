@@ -13,27 +13,26 @@
         items-vec (vec items)
         order-index (rf/subscribe [:order-index])
         drag-index (rf/subscribe [:drag-index])]
-        ;s (r/atom {:order (range (count items-vec))})]
     (fn []
       [:div
        [:ul
         (doall
-          (for [[i pos] (map vector @order-index (range))]
+          (for [[index position] (map vector @order-index (range))]
+            ^{:key index}
             [:li
-             {:key i
-              :style {:border (when (= i @drag-index)
+             {:style {:border (when (= index @drag-index)
                                 "1px solid blue")}
               :draggable true
-              :on-drag-start #(rf/dispatch [:set-drag-index i])
+              :on-drag-start #(rf/dispatch [:set-drag-index index])
               :on-drag-over (fn [e]
                               (.preventDefault e)
-                              (rf/dispatch [:set-drag-over pos])
-                              (rf/dispatch [:swap-position put-before pos @drag-index]))
+                              (rf/dispatch [:set-drag-over position])
+                              (rf/dispatch [:swap-position put-before position @drag-index]))
               :on-drag-leave #(rf/dispatch [:drag-over-nothing])
               :on-drag-end (fn []
                              (rf/dispatch [:clean-drag-n-drop])
                              (map items-vec @order-index))}
-             (get items-vec i)]))]])))
+             (get items-vec index)]))]])))
 
 (defn ui []
   (let [state (rf/subscribe [:state])]
