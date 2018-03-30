@@ -16,3 +16,8 @@
   :order-index
   (fn [db]
     (get db :order-index [])))
+
+(rf/reg-sub
+  :drag-index
+  (fn [db]
+    (get db :drag-index 9999)))
